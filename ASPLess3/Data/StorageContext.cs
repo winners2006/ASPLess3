@@ -12,7 +12,9 @@ namespace ASPLess3.Data
 		public StorageContext() { }
 		public StorageContext(DbContextOptions<StorageContext> dbContext) : base(dbContext) { }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Products;Trusted_Connection=True;TrustServerCertificate=True").LogTo(Console.WriteLine);
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<ProductGroup>(entity =>
 			{

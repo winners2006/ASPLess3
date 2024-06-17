@@ -10,7 +10,7 @@ namespace ASPLess3.Repository
 	{
 		StorageContext storageContext;
 		private readonly IMapper _mapper;
-		public ProductGroupRepository(StorageContext storageContext, IMapper mapper)
+		public ProductGroupRepository(StorageContext storageContext,IMapper mapper)
 		{
 			this.storageContext = storageContext;
 			this._mapper = mapper;
@@ -33,8 +33,12 @@ namespace ASPLess3.Repository
 
 		public IEnumerable<ProductGroupDto> GetAllProductGroups()
 		{
-			var listDto = storageContext.ProductGroups.Select(_mapper.Map<ProductGroupDto>).ToList();
-			return listDto;
+			//using(storageContext = new StorageContext())
+			//{
+                var listDto = storageContext.ProductGroups.Select(_mapper.Map<ProductGroupDto>).ToList();
+                return listDto;
+            //}
+
 		}
 	}
 }
