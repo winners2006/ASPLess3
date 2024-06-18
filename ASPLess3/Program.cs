@@ -1,37 +1,29 @@
 using ASPLess3.Abstraction;
 using ASPLess3.Data;
+using ASPLess3.Graph.Mutation;
+using ASPLess3.Graph.Query;
 using ASPLess3.Mapper;
 using ASPLess3.Repository;
 using Microsoft.EntityFrameworkCore;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// Add services to the container.
-
-//builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<StorageContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("db")));
-builder.Services.AddSingleton<IProductRepository, ProductRepository>();
-builder.Services.AddSingleton<IProductGroupRepository, ProductGroupRepository>();
+builder.Services.AddDbContext<StorageContext>(options =>
+	options.UseSqlServer(builder.Configuration.GetConnectionString("db")));
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductGroupRepository, ProductGroupRepository>();
 builder.Services.AddAutoMapper(typeof(MapperProfile));
-builder.Services.AddGraphQLServer();
+builder.Services.AddMemoryCache();
+builder.Services.AddGraphQLServer().AddQueryType<Query>().AddMutationType<Mutation>();
+builder.Configuration.AddJsonFile("ocelot.json");
+builder.Services.AddOcelot();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
-
+app.UseOcelot().Wait();
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
+app.MapGraphQL();
 app.Run();

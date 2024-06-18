@@ -8,33 +8,39 @@ namespace ASPLess3.Repository
 {
 	public class ProductGroupRepository : IProductGroupRepository
 	{
-		StorageContext storageContext;
+		private readonly StorageContext _storageContext;
 		private readonly IMapper _mapper;
+
 		public ProductGroupRepository(StorageContext storageContext, IMapper mapper)
 		{
-			this.storageContext = storageContext;
-			this._mapper = mapper;
+			_storageContext = storageContext;
+			_mapper = mapper;
 		}
+
 		public int AddProductGroup(ProductGroupDto productGroupDto)
 		{
-			if (storageContext.ProductGroups.Any(p => p.Name == productGroupDto.Name))
-				throw new Exception("Уже есть продукт с таким именем");
+			if (_storageContext.ProductGroups.Any(p => p.Name == productGroupDto.Name))
+				throw new Exception("Уже есть группа продуктов с таким именем");
 
 			var entity = _mapper.Map<ProductGroup>(productGroupDto);
-			storageContext.ProductGroups.Add(entity);
-			storageContext.SaveChanges();
+			_storageContext.ProductGroups.Add(entity);
+			_storageContext.SaveChanges();
 			return entity.Id;
 		}
 
 		public void DeleteProductGroup(int id)
 		{
-			throw new NotImplementedException();
+			var productGroup = _storageContext.ProductGroups.Find(id);
+			if (productGroup != null)
+			{
+				_storageContext.ProductGroups.Remove(productGroup);
+				_storageContext.SaveChanges();
+			}
 		}
 
 		public IEnumerable<ProductGroupDto> GetAllProductGroups()
 		{
-			var listDto = storageContext.ProductGroups.Select(_mapper.Map<ProductGroupDto>).ToList();
-			return listDto;
+			return _storageContext.ProductGroups.Select(pg => _mapper.Map<ProductGroupDto>(pg)).ToList();
 		}
 	}
 }

@@ -9,7 +9,6 @@ namespace ASPLess3.Data
 		public virtual DbSet<ProductGroup> ProductGroups { get; set; }
 		public virtual DbSet<Storage> Storages { get; set; }
 
-		public StorageContext() { }
 		public StorageContext(DbContextOptions<StorageContext> dbContext) : base(dbContext) { }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -20,12 +19,14 @@ namespace ASPLess3.Data
 				entity.ToTable("category");
 				entity.Property(pg => pg.Name).HasColumnName("name").HasMaxLength(255);
 			});
+
 			modelBuilder.Entity<Product>(entity =>
 			{
 				entity.HasKey(p => p.Id).HasName("product_pk");
 				entity.Property(p => p.Name).HasColumnName("name").HasMaxLength(255);
 				entity.HasOne(p => p.ProductGroup).WithMany(pg => pg.Products).HasForeignKey(p => p.ProductGroupId);
 			});
+
 			modelBuilder.Entity<Storage>(entity =>
 			{
 				entity.HasKey(s => s.Id).HasName("storage_pk");
