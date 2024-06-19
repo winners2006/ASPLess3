@@ -10,6 +10,7 @@ namespace ASPLess3.Mapper
 		{
 			CreateMap<Product, ProductDto>().ReverseMap();
 			CreateMap<ProductGroup, ProductGroupDto>().ReverseMap();
+			CreateMap<Storage, StorageDto>().ReverseMap();
 		}
 	}
 }

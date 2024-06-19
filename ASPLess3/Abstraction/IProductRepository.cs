@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ASPLess3.Dto;
-using ASPLess3.Models;
+﻿using ASPLess3.Dto;
 
 
 namespace ASPLess3.Abstraction

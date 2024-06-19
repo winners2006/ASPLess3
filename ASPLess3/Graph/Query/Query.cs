@@ -1,11 +1,9 @@
-﻿using ASPLess3.Models;
-using ASPLess3.Dto;
+﻿using ASPLess3.Dto;
 using ASPLess3.Abstraction;
-using ASPLess3.Repository;
 
 namespace ASPLess3.Graph.Query
 {
-    public class Query(IProductRepository productRepository)
+    public class Query
     {
         //public IEnumerable<ProductDto> GetProducts() => productRepository.GetAllProducts();
         public IEnumerable<ProductDto> GetProducts([Service] IProductRepository repository) =>
@@ -14,5 +12,7 @@ namespace ASPLess3.Graph.Query
         public IEnumerable<ProductGroupDto> GetProductGroups([Service] IProductGroupRepository groupRepository) =>
             groupRepository.GetAllProductGroups();
 
+        public IEnumerable<StorageDto> GetStorageCount([Service] IStorageRepository storageRepository) =>
+            storageRepository.GetProductsCountOnStorage();
     }
 }
