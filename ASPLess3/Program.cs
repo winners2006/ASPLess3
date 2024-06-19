@@ -5,8 +5,6 @@ using ASPLess3.Graph.Query;
 using ASPLess3.Mapper;
 using ASPLess3.Repository;
 using Microsoft.EntityFrameworkCore;
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,15 +13,13 @@ builder.Services.AddDbContext<StorageContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("db")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductGroupRepository, ProductGroupRepository>();
+builder.Services.AddScoped<IStorageRepository, StorageRepository>();
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 builder.Services.AddMemoryCache();
 builder.Services.AddGraphQLServer().AddQueryType<Query>().AddMutationType<Mutation>();
-builder.Configuration.AddJsonFile("ocelot.json");
-builder.Services.AddOcelot();
 
 var app = builder.Build();
 
-app.UseOcelot().Wait();
 app.UseHttpsRedirection();
 app.MapGraphQL();
 app.Run();

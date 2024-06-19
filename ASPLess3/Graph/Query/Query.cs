@@ -10,5 +10,8 @@ namespace ASPLess3.Graph.Query
 
 		public IEnumerable<ProductGroupDto> GetProductGroups([Service] IProductGroupRepository groupRepository) =>
 			groupRepository.GetAllProductGroups();
+
+		public IEnumerable<StorageDto> GetStorages([Service] IStorageRepository storageRepository) =>
+			storageRepository.GetAllStorages();
 	}
 }

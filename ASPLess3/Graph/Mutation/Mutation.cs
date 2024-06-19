@@ -10,5 +10,14 @@ namespace ASPLess3.Graph.Mutation
 
 		public int AddProductGroup([Service] IProductGroupRepository groupRepository, ProductGroupDto productGroupDto) =>
 			groupRepository.AddProductGroup(productGroupDto);
+
+		public int AddStorage([Service] IStorageRepository storageRepository, StorageDto storageDto) =>
+			storageRepository.AddStorage(storageDto);
+
+		public void UpdateStorageCount([Service] IStorageRepository storageRepository, int storageId, int count) =>
+			storageRepository.UpdateStorageCount(storageId, count);
+
+		public void DeleteStorage([Service] IStorageRepository storageRepository, int id) =>
+			storageRepository.DeleteStorage(id);
 	}
 }
